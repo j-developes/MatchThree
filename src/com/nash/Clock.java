@@ -37,17 +37,15 @@ public class Clock {
 				public void run() {
 
 					while (Worker.isAlive()) {
-						now = System.nanoTime(); // example 21131521518059
+						now = System.nanoTime();
 						updateLength = (now - lastLoopTime);// start of loop - current loop
-						if (updateLength < OPTIMAL_TIME) {
-							continue;
-						} else {
+						if (updateLength > OPTIMAL_TIME) {
 							GraphicSch.update();
 							lastLoopTime = now;
 							lastFpsTime = (lastFpsTime + updateLength); // lastFpsTime = almost 0 + next almost 0 + ...
 						}
 
-						if (lastFpsTime >= 1000000000) { // make 0 if you get to 1 second
+						if (lastFpsTime > 1000000000) { // make 0 if you get to 1 second
 							lastFpsTime = 0;
 						}
 						pause();
@@ -61,7 +59,7 @@ public class Clock {
 
 		private void pause() {
 			try {
-				Thread.sleep(20);
+				Thread.sleep(30);
 			} catch (InterruptedException t) {
 				System.exit(0);
 			}

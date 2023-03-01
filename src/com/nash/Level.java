@@ -3,7 +3,11 @@ package com.nash;
 import java.awt.Color;
 import java.util.Random;
 
-import com.nash.view.ArtJob;
+import com.nash.art.PaintClouds;
+import com.nash.art.PaintLevel;
+import com.nash.art.PaintMoon;
+import com.nash.art.PaintScene;
+import com.nash.art.PaintSky;
 
 /**
  * @author John Nash
@@ -13,11 +17,6 @@ import com.nash.view.ArtJob;
  */
 public class Level {
 	private LevelCore Lc;
-	private ArtJob LevelGraphics = new ArtJob("level");
-	private ArtJob LevelSky = new ArtJob("sky");
-	private ArtJob LevelMoon = new ArtJob("moon");
-	private ArtJob LevelClouds = new ArtJob("clouds");
-	private ArtJob LevelScene = new ArtJob("scene");
 	private Match Match3;
 	private int counts = 0;
 	private int time = 0;
@@ -25,15 +24,20 @@ public class Level {
 	private int level = 0;
 	private int missionSecs = 59;
 	private int missionMins = 5;
+	private PaintSky LevelSky = new PaintSky();
+	private PaintMoon LevelMoon = new PaintMoon();
+	private PaintScene LevelScene = new PaintScene();
+	private PaintClouds LevelClouds = new PaintClouds();
 
 	private class LevelCore {
+		
 		int[] xcloud = { 700, 750, 760, 800 };
 		int[] ycloud = { 120, 100, 100, 120 };
 		int[] xArr = { -50, 0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850 };
 		int[] yArr = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		Random rando = new Random();
 
-		private ArtJob setScene() {
+		private String setScene() {
 
 			if (frame % 3 == 0) {
 
@@ -47,7 +51,7 @@ public class Level {
 			}
 
 			LevelScene.setSettings(18, xArr, yArr, Color.black);
-			return LevelScene;
+			return "scene";
 		}
 
 		private void levelTimer() {
@@ -80,26 +84,25 @@ public class Level {
 			}
 		}
 
-		private ArtJob setSky() {
+		private String setSky() {
 
 			if (frame == 1) {
 				time++;
 
 				if (time < 10) {
-					LevelSky.sky = true;
+					LevelSky.setColor(true);
 				} else {
-					LevelSky.sky = false;
+					LevelSky.setColor(false);
 				}
-
 				if (time > 20) {
 					time = 0;
 				}
 			}
 
-			return LevelSky;
+			return "sky";
 		}
 
-		private ArtJob setPlanet() {
+		private String setMoon() {
 
 			if (frame == 10) {
 				counts++;
@@ -109,10 +112,10 @@ public class Level {
 			if (counts > 800) {
 				counts = -10;
 			}
-			return LevelMoon;
+			return "moon";
 		}
 
-		private ArtJob setClouds() {
+		private String setClouds() {
 
 			int yrando = 0;
 			int yrand = 0;
@@ -136,9 +139,10 @@ public class Level {
 				ycloud[2] = yrando - yrand;
 				ycloud[3] = yrando;
 			}
+			
+			LevelClouds.setSettings(xcloud, ycloud, PaintSky.sky);
 
-			LevelClouds.setSettings(4, xcloud, ycloud, Color.black);
-			return LevelClouds;
+			return "clouds";
 		}
 
 		private void resetLevel() {
@@ -149,24 +153,24 @@ public class Level {
 			Match3.reset();
 		}
 
-		private ArtJob setLevel() {
+		private String setLevel() {
 
 			String m = String.valueOf(missionMins);
 			String s = String.valueOf(missionSecs);
-
-			LevelGraphics.timer = "00:" + m + ":" + s;
-			LevelGraphics.match3 = Match3.matchMap;
-			LevelGraphics.score = "Score " + String.valueOf(Match3.points);
-			LevelGraphics.level = "Level " + String.valueOf(level);
+			String timeString = "00:" + m + ":" + s;
+			PaintLevel.setTime(timeString);
+			PaintLevel.match3 = Match3.matchMap;
+			PaintLevel.score = "Score " + String.valueOf(Match3.points);
+			PaintLevel.level = "Level " + String.valueOf(level);
 
 			if (level == 0) {
-				LevelGraphics.setSettings(LevelGraphics.leve0);
+				PaintLevel.setLevel(PaintLevel.level_0);
 			} else if (level == 1) {
-				LevelGraphics.setSettings(LevelGraphics.leve1);
+				PaintLevel.setLevel(PaintLevel.level_1);
 			} else {
-				LevelGraphics.setSettings(LevelGraphics.leve2);
+				PaintLevel.setLevel(PaintLevel.level_2);
 			}
-			return LevelGraphics;
+			return "level";
 		}
 
 		private void setMountainRange(int incline) {
@@ -182,12 +186,40 @@ public class Level {
 			yArr[17] = 800;
 
 		}
+		
+		private String[][] putUpdateTogether(){
+			String[][] updates = new String[5][2];
+			
+			updates[0][0] = Lc.setSky();
+			updates[0][1] = "5";
+			
+			updates[1][0] = Lc.setClouds();
+			updates[1][1] = "4";
+			
+			updates[2][0] = Lc.setMoon();
+			updates[2][1] = "4";
+			
+			updates[3][0] = Lc.setScene();
+			updates[3][1] = "3";
+			
+			updates[4][0] = Lc.setLevel();
+			updates[4][1] = "2";
+			
+			return updates;
+		}
 
 	}
 
 	Level(Match M) {
 		Lc = new LevelCore();
 		Match3 = M;
+	}
+	
+	protected String[][] getEntireUpdate(){
+		
+		String[][] massUpdate = Lc.putUpdateTogether();
+		
+		return massUpdate;
 	}
 
 	protected void resetLevel() {
@@ -196,25 +228,5 @@ public class Level {
 
 	protected void updateMissionTime() {
 		Lc.levelTimer();
-	}
-
-	protected ArtJob updateScene() {
-		return Lc.setScene();
-	}
-
-	protected ArtJob updateClouds() {
-		return Lc.setClouds();
-	}
-
-	protected ArtJob updateSky() {
-		return Lc.setSky();
-	}
-
-	protected ArtJob updatelevel() {
-		return Lc.setLevel();
-	}
-
-	protected ArtJob updateMoon() {
-		return Lc.setPlanet();
 	}
 }

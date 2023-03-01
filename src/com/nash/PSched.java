@@ -40,11 +40,7 @@ public class PSched {
 
 			if (Menus.MenuOn == false) {
 				LevelZero.updateMissionTime();
-				Gui.ModifiedPanel.Artist.addJob(LevelZero.updateSky(), 5);
-				Gui.ModifiedPanel.Artist.addJob(LevelZero.updateMoon(), 4);
-				Gui.ModifiedPanel.Artist.addJob(LevelZero.updateClouds(), 4);
-				Gui.ModifiedPanel.Artist.addJob(LevelZero.updateScene(), 3);
-				Gui.ModifiedPanel.Artist.addJob(LevelZero.updatelevel(), 2);
+				Gui.ModifiedPanel.Artist.addJob(LevelZero.getEntireUpdate());
 				Gui.ModifiedPanel.Artist.addJob(LaPlay.update(), 1);
 			} else {
 				Gui.ModifiedPanel.Artist.addJob(Menus.updateMenu(), 5);

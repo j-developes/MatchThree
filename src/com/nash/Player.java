@@ -2,7 +2,7 @@ package com.nash;
 
 import java.awt.Color;
 
-import com.nash.view.ArtJob;
+import com.nash.art.PaintPlayer;
 
 /**
  * 
@@ -20,7 +20,7 @@ public class Player {
 
 	private Match Match3;
 	PlayerCore PC;
-	ArtJob PlayerGraphics = new ArtJob("player");
+	PaintPlayer PlayerGraphics = new PaintPlayer();
 
 	private class PlayerCore {
 		private boolean firstValueUnset = true;
@@ -30,9 +30,9 @@ public class Player {
 		private int y1 = 0;
 		private int y2 = 0;
 
-		private ArtJob updatePlayer() {
+		private String updatePlayer() {
 
-			return PlayerGraphics;
+			return "player";
 		}
 
 		private void getPoints(int x, int y) {
@@ -142,7 +142,7 @@ public class Player {
 		Match3 = M;
 	}
 
-	protected ArtJob update() {
+	protected String update() {
 		return PC.updatePlayer();
 	}
 

@@ -1,6 +1,6 @@
 package com.nash;
 
-import com.nash.view.ArtJob;
+import com.nash.art.PaintMenu;
 
 /**
  * @author John Nash
@@ -24,10 +24,10 @@ public class Menu {
 	private class MenuCore {
 
 		private int cursor = 2;
-		private ArtJob GraphicMenu;
+		private PaintMenu GraphicMenu;
 
 		MenuCore() {
-			GraphicMenu = new ArtJob("menu");
+			GraphicMenu = new PaintMenu();
 		}
 
 		private void scrollUp() {
@@ -44,11 +44,11 @@ public class Menu {
 			}
 		}
 
-		private ArtJob update() {
+		private String update() {
 
 			GraphicMenu.setSettings(cursor);
-			GraphicMenu.nwgame = swapNwgameResu;
-			return GraphicMenu;
+			GraphicMenu.setNwgame(swapNwgameResu);
+			return "menu";
 		}
 
 		private void selectNewGame() {
@@ -87,7 +87,7 @@ public class Menu {
 		updateMenu();
 	}
 
-	protected ArtJob updateMenu() {
+	protected String updateMenu() {
 		return MenuC.update();
 	}
 
