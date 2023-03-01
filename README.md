@@ -12,5 +12,5 @@ reset the game.
 
 The Menu is always reachable by pressing escape.
 
-![gameplay.png image](demosite.png)
+![gameplay.png image](gameplay.png)
 
