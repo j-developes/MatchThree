@@ -1,4 +1,8 @@
 # MatchThree
+
+>Version: 1.0<br />
+>Tested on: Windows
+
 A basic match three game.
 
 The user clicks and drags simular shapes together to match three before the
@@ -7,3 +11,6 @@ points to reach the next level. If the player has no moves then reset will
 reset the game.
 
 The Menu is always reachable by pressing escape.
+
+![gameplay.png image](demosite.png)
+
