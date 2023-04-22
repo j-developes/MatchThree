@@ -33,7 +33,6 @@ public class GraphicsPainter {
 		}
 
 		for (int j = 0; j < ArtInstructionList4.size(); j++) {
-			int uh = ArtInstructionList4.size();
 			g = AGun.fireArt(ArtInstructionList4.get(j), g);
 			ArtInstructionList4.remove(j);
 		}
